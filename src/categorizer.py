@@ -116,7 +116,17 @@ Respond in JSON format:
         )
         
         import json
-        result = json.loads(response.choices[0].message.content)
+        content = response.choices[0].message.content.strip()
+        
+        # Clean markdown code blocks if present
+        if "```json" in content:
+            content = content.split("```json")[1].split("```")[0].strip()
+        elif "```" in content:
+            content = content.split("```")[1].split("```")[0].strip()
+            
+        result = json.loads(content)
+        
+        # Create a map of index to category
         category_map = {item['index']: item['category'] for item in result.get('assignments', [])}
         
         # Now categorize all dialogues

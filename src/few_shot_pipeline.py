@@ -64,11 +64,11 @@ Customer request: {test_input}
 Respond with just the category name."""
         
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-5-nano-2025-08-07",
             messages=[
                 {"role": "user", "content": prompt}
             ],
-            temperature=0.3
+            # temperature=0.3
         )
         return response.choices[0].message.content.strip()
     except Exception as e:
@@ -111,7 +111,7 @@ def generate_steps_few_shot(test_input: str, examples: List[Dict[str, Any]],
             examples_text += f"Customer: {reason}\n"
             examples_text += f"Steps: {json.dumps(steps)}\n"
         
-        prompt = f"""You are a customer service assistant. Given a customer request, generate the steps needed to help them.
+        prompt = f"""You are a customer service assistant. Given a customer request, generate the steps for the agent with the goal of helping the customer.
 
 Few-shot examples:
 {examples_text}
@@ -123,17 +123,17 @@ Respond in JSON format:
 {{
     "category": "category name",
     "reason": "brief reason for the call",
-    "steps": ["step 1", "step 2", "step 3"]
+    "steps": ["step 1", "step 2", "...", "step N"]
 }}
 """
         
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-5-nano-2025-08-07",
             messages=[
                 {"role": "system", "content": "You are a helpful customer service assistant that generates step-by-step instructions."},
                 {"role": "user", "content": prompt}
             ],
-            temperature=0.3
+            # temperature=0.3
         )
         
         result_text = response.choices[0].message.content.strip()
