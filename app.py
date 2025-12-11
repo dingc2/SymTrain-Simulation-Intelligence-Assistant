@@ -57,7 +57,7 @@ def load_and_process_data():
         processed = []
         for item in merged:
             try:
-                reason, steps = extract_reason_and_steps(item['audioContentItems'], method="rule_based")
+                reason, steps = extract_reason_and_steps(item['audioContentItems'], method="gpt")
                 item['reason'] = reason
                 item['steps'] = steps
                 processed.append(item)
@@ -71,7 +71,7 @@ def load_and_process_data():
         
         # Categorize - use rule-based first (faster, more reliable)
         try:
-            categorized = categorize_all(processed, method="rule_based")
+            categorized = categorize_all(processed, method="gpt")
             return categorized
         except Exception as e:
             st.warning(f"Categorization error: {e}")
