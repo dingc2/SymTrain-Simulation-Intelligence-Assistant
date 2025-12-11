@@ -1,49 +1,14 @@
 import streamlit as st
 import traceback
-
+from openai import OpenAI
 st.set_page_config(page_title="Customer Assistance Tool", page_icon="🤖", layout="wide")
 
 # ---------------- IMPORT PIPELINE ----------------
 try:
-    from src.data_loader import load_json_files
-    from src.dialogue_merger import merge_all_dialogues
-    from src.reason_extractor import extract_reason_and_steps
-    from src.categorizer import categorize_all
-    from src.few_shot_pipeline import (
-        predict_category_with_gpt,
-        generate_steps_few_shot
-    )
+    from src.generate_steps import (predict_category_with_gpt, generate_steps_few_shot)
 except Exception as e:
     st.error(f"Import error: {e}")
     st.stop()
-
-
-# ---------------- LOAD + PROCESS TRAINING DATA ----------------
-@st.cache_data
-def load_pipeline_data():
-    files = load_json_files("data/jsons")
-    merged = merge_all_dialogues(files)
-
-    processed = []
-    for item in merged:
-        try:
-            reason, steps = extract_reason_and_steps(item["audioContentItems"], method="gpt")
-            item.update({"reason": reason, "steps": steps})
-            processed.append(item)
-        except:
-            pass
-
-    try:
-        return categorize_all(processed, method="gpt")
-    except:
-        for x in processed:
-            x.setdefault("category", "Other")
-        return processed
-
-
-data = load_pipeline_data()
-st.sidebar.success(f"Training items loaded: {len(data)}")
-
 
 # ------------------- MAIN UI -------------------
 st.title("SymTrain Customer Assistance Tool")
@@ -54,11 +19,12 @@ user_text = st.text_area(
     height=120
 )
 
+client = OpenAI()
 # Automatically run model when text entered
 if user_text.strip():
     try:
         # Predict category
-        category = predict_category_with_gpt(user_text, data)
+        category = predict_category_with_gpt(client, reason, steps)
 
         # A few example conversations from same category
         examples = [x for x in data if x.get("category") == category][:3] or data[:3]
