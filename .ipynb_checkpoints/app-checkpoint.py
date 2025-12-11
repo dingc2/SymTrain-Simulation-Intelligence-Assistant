@@ -1,7 +1,7 @@
 import streamlit as st
 import traceback
 
-st.set_page_config(page_title="Customer Assistance Tool", page_icon="🤖", layout="wide")
+st.set_page_config(page_title="Customer Assistance MVP", page_icon="🤖", layout="wide")
 
 # ---------------- IMPORT PIPELINE ----------------
 try:
