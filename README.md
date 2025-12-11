@@ -8,18 +8,17 @@ A fully automated customer assistance pipeline that generates step-by-step instr
 symtrain/
 ├── src/
 │   ├── __init__.py
-│   ├── data_loader.py          # Task 1: Load JSON files
-│   ├── dialogue_merger.py      # Task 2: Merge dialogue text
-│   ├── reason_extractor.py    # Task 3: Extract reasons and steps
-│   ├── categorizer.py          # Task 4: Categorize simulations
-│   ├── few_shot_pipeline.py    # Task 5: Few-shot learning
-│   └── process_data.py         # Main processing script
+│   └── generate_steps.py            # Generate steps using GPT
 ├── data/
-│   └── jsons/                  # JSON simulation files
-├── app.py                      # Task 6: Streamlit application
-├── requirements.txt            # Python dependencies
-├── Dockerfile                  # Task 7: Docker configuration
-└── README.md                   # This file
+    ├── ...                          # simulation folders
+│   └── jsons/                       # aggregated JSON files
+├── cleaning_and_extraction.ipynb    # clean data from JSON files and extract reasoning and steps using GPT AND transformer
+├── categorization_transformer.ipynb # Categorizing simulations using transformer
+├── categorization_GPT.ipynb         # Categorizing simulations using LLMs
+├── app.py                           # Streamlit application
+├── requirements.txt                 # Python dependencies
+├── Dockerfile                       # Docker configuration
+└── README.md                        # This file
 ```
 
 ## Setup

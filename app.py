@@ -7,7 +7,6 @@ import os
 
 st.set_page_config(page_title="Customer Assistance Tool", layout="wide")
 
-# ---------------- IMPORT PIPELINE ----------------
 try:
     from src.generate_steps import (
         predict_category_with_gpt, generate_steps_few_shot
@@ -25,8 +24,6 @@ client = OpenAI()
 with open("reason_step_categories_openai.json", "r", encoding="utf-8") as f:
     data = json.load(f)
 
-# ------------------- FORM -------------------
-# Pressing Enter inside this form will submit it
 with st.form(key="input_form"):
     user_text = st.text_area(
         "Customer request:",
@@ -34,9 +31,8 @@ with st.form(key="input_form"):
         height=120
     )
 
-    submitted = st.form_submit_button("Run")   # ⬅ Enter triggers this
+    submitted = st.form_submit_button("Run") 
 
-# ------------------- PROCESS -------------------
 if submitted and user_text.strip():
     try:
         category = predict_category_with_gpt(client, user_text)
