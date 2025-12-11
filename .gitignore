@@ -15,7 +15,6 @@ build/
 *.log
 processed_data.json
 test_results.json
-*.ipynb
 .pytest_cache/
 .coverage
 htmlcov/
